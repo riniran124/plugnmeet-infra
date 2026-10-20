@@ -1,0 +1,4 @@
+*.yaml
+!config-example.yaml
+*.conf
+!nginx-example.conf
