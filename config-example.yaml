@@ -1,0 +1,15 @@
+# Пример конфигурации plugNmeet
+database_info:
+  host: 127.0.0.1
+  username: "YOUR_DB_USER"
+  password: "YOUR_DB_PASSWORD"
+  db: "plugnmeet"
+
+redis_info:
+  host: "127.0.0.1:6379"
+  password: "YOUR_REDIS_PASSWORD"
+
+livekit_info:
+  host: "http://127.0.0.1:7880"
+  api_key: "YOUR_API_KEY"
+  secret: "YOUR_API_SECRET"
