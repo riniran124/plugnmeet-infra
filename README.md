@@ -8,3 +8,4 @@
 - Nginx (reverse-proxy)
 - NATS (очереди)
 - coturn (TURN-сервер)
+Project is ready for demo
