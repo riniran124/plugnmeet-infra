@@ -1,0 +1,22 @@
+[Unit]
+Description=plugNmeet Recorder (запись конференций: Xvfb + Chrome + ffmpeg)
+After=network-online.target nats.service plugnmeet.service
+Wants=network-online.target
+Requires=nats.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/plugnmeet-recorder
+# Chrome берёт доверенные УЦ из $HOME/.pki/nssdb (туда добавлен Gerber Root CA)
+Environment=HOME=/root
+# Звуковой сервер для захвата звука конференции (виртуальные sink создаёт сам рекордер)
+ExecStartPre=-/usr/bin/pulseaudio -D --exit-idle-time=-1 --disallow-exit
+ExecStart=/opt/plugnmeet-recorder/plugnmeet-recorder --config /opt/plugnmeet-recorder/config.yaml
+Restart=on-failure
+RestartSec=5
+# На сервере 4 ГБ ОЗУ: ограничиваем рекордер, чтобы запись не мешала остальным службам
+MemoryHigh=1200M
+MemoryMax=1500M
+
+[Install]
+WantedBy=multi-user.target
