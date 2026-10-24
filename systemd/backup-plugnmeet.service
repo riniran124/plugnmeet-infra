@@ -1,0 +1,8 @@
+[Unit]
+Description=Резервное копирование plugNmeet
+After=mariadb.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/backup_plugnmeet.sh
+ExecStartPost=/usr/local/sbin/rotate_backups.sh 30

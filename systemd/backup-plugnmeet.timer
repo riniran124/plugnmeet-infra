@@ -1,0 +1,10 @@
+[Unit]
+Description=Ежедневное резервное копирование plugNmeet в 02:30
+
+[Timer]
+OnCalendar=*-*-* 02:30:00
+Persistent=true
+RandomizedDelaySec=5min
+
+[Install]
+WantedBy=timers.target

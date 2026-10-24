@@ -1,0 +1,6 @@
+[Unit]
+Description=Проверка доступности plugNmeet
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/check_plugnmeet.sh
