@@ -1,0 +1,5 @@
+logingracetime 30
+maxauthtries 3
+clientaliveinterval 300
+permitrootlogin no
+x11forwarding no

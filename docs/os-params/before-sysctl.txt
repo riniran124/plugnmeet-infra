@@ -1,0 +1,5 @@
+net.core.rmem_max = 212992
+net.core.wmem_max = 212992
+kernel.dmesg_restrict = 1
+vm.swappiness = 60
+net.ipv4.tcp_syncookies = 1

@@ -1,0 +1,5 @@
+logingracetime 120
+maxauthtries 6
+clientaliveinterval 0
+permitrootlogin without-password
+x11forwarding yes
