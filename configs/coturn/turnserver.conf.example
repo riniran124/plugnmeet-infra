@@ -1,0 +1,15 @@
+syslog
+no-rfc5780
+no-stun-backward-compatibility
+response-origin-only-with-rfc5780
+listening-port=3478
+fingerprint
+lt-cred-mech
+realm=gerber.org
+user=CHANGE_ME
+cert=/etc/ssl/certs/ssl-cert-snakeoil.pem
+pkey=/etc/ssl/private/ssl-cert-snakeoil.key
+log-file=/var/log/turnserver.log
+simple-log
+no-tlsv1
+no-tlsv1_1

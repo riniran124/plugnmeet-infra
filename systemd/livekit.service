@@ -1,0 +1,14 @@
+[Unit]
+Description=LiveKit Server
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/opt/livekit/livekit-server --config /opt/livekit/livekit.yaml
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

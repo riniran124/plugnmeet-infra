@@ -1,0 +1,17 @@
+[Unit]
+Description=plugNmeet Server
+After=network-online.target mariadb.service redis-server.service nats.service livekit.service
+Requires=nats.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+WorkingDirectory=/opt/plugnmeet
+ExecStart=/opt/plugnmeet/plugnmeet-server --config /opt/plugnmeet/config.yaml
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
