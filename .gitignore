@@ -1,4 +1,9 @@
-*.yaml
-!config-example.yaml
-*.conf
-!nginx-example.conf
+# Секреты и закрытые ключи — никогда не коммитим
+*.key
+*.pem
+*.secret
+config.yaml
+# Резервные копии и дампы
+*.sql
+*.sql.gz
+*.tar.gz
