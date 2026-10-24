@@ -36,7 +36,7 @@ log_settings:
   log_level: "info"
 # host — внешний адрес LiveKit: его же получает браузер для подключения к медиасерверу
 livekit_info:
-  host: "https://192.168.122.10/livekit"
+  host: "https://livekit.gerber.org"
   api_key: "CHANGE_ME"
   secret: "CHANGE_ME"
 redis_info:
@@ -62,7 +62,7 @@ nats_info:
     - "nats://127.0.0.1:4222"
   # адрес NATS WebSocket для браузера (проксируется nginx -> 127.0.0.1:8222)
   nats_ws_urls:
-    - "wss://192.168.122.10:443/nats-ws"
+    - "wss://meet.gerber.org:443/nats-ws"
   account: PNM
   nkey: "CHANGE_ME"
   auth_callout_issuer_private: "CHANGE_ME"

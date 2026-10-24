@@ -1,0 +1,4 @@
+basicConstraints=CA:FALSE
+keyUsage=digitalSignature,keyEncipherment
+extendedKeyUsage=serverAuth
+subjectAltName=DNS:meet.gerber.org,DNS:livekit.gerber.org,DNS:srv-1.gerber.org,IP:192.168.122.10

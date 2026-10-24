@@ -5,7 +5,7 @@
 set -euo pipefail
 
 CONF=/opt/plugnmeet/config.yaml
-SERVER="https://192.168.122.10"
+SERVER="https://meet.gerber.org"
 API_KEY=$(awk '/^client:/{f=1} f&&/api_key:/{gsub(/"/,"",$2);print $2;exit}' "$CONF")
 SECRET=$(awk '/^client:/{f=1} f&&/secret:/{gsub(/"/,"",$2);print $2;exit}' "$CONF")
 

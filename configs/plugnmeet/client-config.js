@@ -1,7 +1,7 @@
 // We'll define a single configuration object.
 window.plugNmeetConfig = {
   // The URL of your plugNmeet server.
-  serverUrl: 'https://192.168.122.10',
+  serverUrl: 'https://meet.gerber.org',
 
   // Forces the web client into hybrid mode (native publisher + web subscriber).
   // In hybrid mode the web client hides local media controls and drives media

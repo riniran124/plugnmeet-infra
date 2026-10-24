@@ -1,28 +1,32 @@
-# plugNmeet — srv-1.gerber.org
+# plugNmeet — srv-1.gerber.org: TLS для двух поддоменов
+# meet.gerber.org — веб-клиент и API plugNmeet, NATS WebSocket
+# livekit.gerber.org — медиасервер LiveKit (сигнализация WebRTC)
+
+# HTTP -> HTTPS для всех имён
 server {
     listen 80;
-    server_name srv-1.gerber.org 192.168.122.10 _;
+    server_name meet.gerber.org livekit.gerber.org srv-1.gerber.org 192.168.122.10 _;
     return 301 https://$host$request_uri;
 }
 
+# meet.gerber.org (сервер по умолчанию: сюда же попадают запросы по IP и srv-1)
 server {
-    listen 443 ssl http2;
-    server_name srv-1.gerber.org 192.168.122.10 _;
+    listen 443 ssl http2 default_server;
+    server_name meet.gerber.org srv-1.gerber.org 192.168.122.10;
 
-    ssl_certificate     /etc/ssl/certs/plugnmeet.crt;
-    ssl_certificate_key /etc/ssl/private/plugnmeet.key;
+    ssl_certificate     /etc/ssl/certs/meet-gerber-fullchain.crt;
+    ssl_certificate_key /etc/ssl/private/meet-gerber.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
 
     client_max_body_size 64m;
 
-    # LiveKit (медиасервер): API + WebSocket сигнализации
+    # Старый путь к LiveKit — оставлен для совместимости со сценарием plugnmeet-room
     location /livekit/ {
         proxy_pass http://127.0.0.1:7880/;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
         proxy_read_timeout 86400;
     }
 
@@ -44,6 +48,27 @@ server {
         proxy_set_header Connection "upgrade";
         proxy_set_header Host $host;
         proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 86400;
+    }
+}
+
+# livekit.gerber.org
+server {
+    listen 443 ssl http2;
+    server_name livekit.gerber.org;
+
+    ssl_certificate     /etc/ssl/certs/meet-gerber-fullchain.crt;
+    ssl_certificate_key /etc/ssl/private/meet-gerber.key;
+    ssl_protocols TLSv1.2 TLSv1.3;
+
+    location / {
+        proxy_pass http://127.0.0.1:7880;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+        proxy_set_header Host $host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_read_timeout 86400;
