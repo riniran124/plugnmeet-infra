@@ -1,0 +1,20 @@
+-w /opt/plugnmeet/config.yaml -p wa -k pnm_config
+-w /opt/plugnmeet/client/dist/assets/config.js -p wa -k pnm_config
+-w /opt/livekit/livekit.yaml -p wa -k pnm_config
+-w /etc/nats/nats-server.conf -p wa -k pnm_config
+-w /etc/nginx/sites-available/plugnmeet -p wa -k pnm_config
+-w /etc/turnserver.conf -p wa -k pnm_config
+-w /etc/systemd/system/plugnmeet.service -p wa -k pnm_config
+## Секреты: даже чтение
+-w /etc/plugnmeet/ldap.secret -p rwa -k pnm_secret
+-w /etc/ssl/gerber-ca/ca.key -p rwa -k pnm_secret
+## Учётные записи и привилегии
+-w /etc/passwd -p wa -k identity
+-w /etc/shadow -p wa -k identity
+-w /etc/group -p wa -k identity
+-w /etc/sudoers -p wa -k identity
+-w /etc/sudoers.d -p wa -k identity
+## Домен
+-w /etc/samba/smb.conf -p wa -k samba_config
+## Резервные копии: удаление и изменение
+-w /var/backups/plugnmeet -p wa -k pnm_backup

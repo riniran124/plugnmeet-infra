@@ -1,0 +1,11 @@
+# Журналы сценариев сопровождения plugNmeet
+/var/log/plugnmeet/*.log {
+    weekly
+    rotate 8
+    compress
+    delaycompress
+    missingok
+    notifempty
+    dateext
+    create 0640 root adm
+}
