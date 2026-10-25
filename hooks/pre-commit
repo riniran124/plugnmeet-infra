@@ -1,0 +1,32 @@
+#!/bin/bash
+# pre-commit: контроль синтаксиса и защита от утечки секретов перед каждой фиксацией.
+fail=0
+files=$(git diff --cached --name-only --diff-filter=ACM)
+
+for f in $files; do
+    case "$f" in
+        *.sh)
+            bash -n "$f" || { echo "ОШИБКА синтаксиса bash: $f"; fail=1; }
+            if command -v shellcheck >/dev/null; then
+                shellcheck -S error "$f" || { echo "ОШИБКА shellcheck: $f"; fail=1; }
+            fi ;;
+        *.yaml|*.yml|*.yaml.example)
+            python3 -c 'import sys, yaml; yaml.safe_load(open(sys.argv[1]))' "$f" 2>/dev/null \
+                || { echo "ОШИБКА синтаксиса YAML: $f"; fail=1; } ;;
+        *.service|*.timer)
+            out=$(systemd-analyze verify "$f" 2>&1)
+            [ -z "$out" ] || { echo "ПРЕДУПРЕЖДЕНИЕ systemd-analyze: $f"; echo "$out"; } ;;
+        configs/nginx/*)
+            grep -q 'server' "$f" || { echo "ОШИБКА: $f не похож на конфиг nginx"; fail=1; } ;;
+    esac
+done
+
+# Секреты: закрытые ключи и непустые secret/password, кроме CHANGE_ME
+if git diff --cached -U0 | grep -E '^\+' | grep -Ei -- '-----BEGIN [A-Z ]*PRIVATE KEY|(secret|password|nkey)[a-z_]*:\s*"?[A-Za-z0-9!@#$%^&*_+-]{6,}' \
+       | grep -v CHANGE_ME; then
+    echo "ОШИБКА: похоже на секрет в коммите (см. строки выше). Замените значение на CHANGE_ME."
+    fail=1
+fi
+
+[ $fail -eq 0 ] && echo "pre-commit: проверки пройдены"
+exit $fail
