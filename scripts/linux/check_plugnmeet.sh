@@ -14,6 +14,10 @@ PROBLEMS=()
 for svc in plugnmeet livekit nats nginx mariadb redis-server coturn samba-ad-dc; do
     systemctl is-active --quiet "$svc" || PROBLEMS+=("служба $svc не активна")
 done
+# Любые другие упавшие службы (INC-001: дублирующая nats-server.service висела в failed незамеченной).
+# Саму check-plugnmeet.service не считаем: она в failed после каждой неуспешной проверки.
+failed=$(systemctl list-units --state=failed --no-legend --plain | awk '$1 != "check-plugnmeet.service" {print $1}' | paste -sd, -)
+[ -z "$failed" ] || PROBLEMS+=("службы в состоянии failed: $failed")
 
 # 2. Сервис снаружи — так, как его видит пользователь (через nginx и TLS)
 code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 5 https://meet.gerber.org/)
